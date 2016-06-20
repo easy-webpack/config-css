@@ -8,13 +8,13 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
  */
 export function css(sourceMap = false, extractCss = { filename: 'styles.css', allChunks: false }) {
   return function css(this: WebpackConfig): WebpackConfig {
-    let extractCSSinstance = extractCss ? new ExtractTextPlugin('[name].css', extractCss) : null
-    let cssLoader = `css${sourceMap ? '?sourceMap' : ''}`
+    const extractCSSinstance = extractCss ? new ExtractTextPlugin('[name].css', extractCss) : null
+    const cssLoader = `css${sourceMap ? '?sourceMap' : ''}`
     const config = {
       module: {
         loaders: get(this, 'module.loaders', []).concat([{
           test: /\.css$/i,
-          loaders: extractCss ? extractCSSinstance.extract(['style', cssLoader]) : ['style', cssLoader]
+          loaders: extractCss ? extractCSSinstance.extract('style', cssLoader) : ['style', cssLoader]
         }])
       }
     } as WebpackConfig
