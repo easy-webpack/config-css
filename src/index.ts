@@ -6,7 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
  * @param sourceMap enable generating source maps (slower build)
  * @param extractCss leave empty to skip extracting CSS or define an object with filename and optionally allChunks (boolean)
  */
-export function css(sourceMap = false, extractCss = { filename: '[name].css', allChunks: false }) {
+export = function css(sourceMap = false, extractCss = { filename: '[name].css', allChunks: false }) {
   return function css(this: WebpackConfig): WebpackConfig {
     const extractCSSinstance = extractCss ? new ExtractTextPlugin(extractCss.filename || '[name].css', extractCss) : null
     const cssLoader = `css${sourceMap ? '?sourceMap' : ''}`
