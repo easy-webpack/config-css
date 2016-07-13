@@ -9,7 +9,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
  * extractText: do you want to extract all css to a separate file? boolean, configuration object or instance of ExtractTextPlugin, defaults to true
  * resolveRelativeUrl: boolean or object with parameters
  */
-export = function css({ filename = '[name].css', allChunks = false, sourceMap = false, extractText = undefined, resolveRelativeUrl = undefined } = {}) {
+export = function css({ filename = '[name].css', allChunks = false, sourceMap = false, extractText = undefined, resolveRelativeUrl = undefined, additionalLoaders = [], test = /\.css$/i } = {}) {
   return function css(this: WebpackConfig): WebpackConfig {
     const loaders = ['style', `css${sourceMap ? '?sourceMap' : ''}`]
 
@@ -18,14 +18,30 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
       sourceMap = true // source maps need to be on for this
     }
 
+    if (additionalLoaders) {
+      loaders.push(...additionalLoaders)
+    }
+
     const extractCss = extractText !== false
     const providedInstance = extractText instanceof ExtractTextPlugin
-    if (!providedInstance)
-      extractText = extractCss ? new ExtractTextPlugin(filename, extractText instanceof Object ? extractText : { allChunks, sourceMap }) : null
+    const extractTextInstances: Map<string, any> = this.metadata.extractTextInstances = this.metadata.extractTextInstances || new Map()
+
+    if (!providedInstance) {
+      if (extractCss) {
+        extractText = extractTextInstances.get(filename)
+        if (!extractText) {
+          extractText = new ExtractTextPlugin(filename, extractText instanceof Object ? extractText : { allChunks, sourceMap })
+          extractTextInstances.set(filename, extractText)
+        }
+      } else {
+        extractText = null
+      }
+    }
+
     const config = {
       module: {
         loaders: get(this, 'module.loaders', []).concat([{
-          test: /\.css$/i,
+          test,
           loaders: extractCss ? extractText.extract(...loaders.slice(1)) : loaders
         }])
       }
@@ -40,6 +56,7 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
          */
         extractText
       ].concat(get(this, 'plugins', []))
+      config.metadata.extractTextInstances = extractTextInstances
     }
     if (resolveRelativeUrl instanceof Object) {
       config['resolveUrlLoader'] = resolveRelativeUrl
