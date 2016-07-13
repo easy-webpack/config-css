@@ -40,7 +40,8 @@
   "dependencies": {
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^2.0.0-beta",
-    "style-loader": "^0.13.1"
+    "style-loader": "^0.13.1",
+    "resolve-url-loader": "^1.6.0"
   },
   "peerDependencies": {
     "@easy-webpack/core": "*"
