@@ -44,6 +44,9 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
           test,
           loaders: extractCss ? extractText.extract(...loaders.slice(1)) : loaders
         }])
+      },
+      metadata: {
+        extractTextInstances
       }
     } as WebpackConfig
     if (extractText && !providedInstance) {
@@ -56,7 +59,6 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
          */
         extractText
       ].concat(get(this, 'plugins', []))
-      config.metadata.extractTextInstances = extractTextInstances
     }
     if (resolveRelativeUrl instanceof Object) {
       config['resolveUrlLoader'] = resolveRelativeUrl
