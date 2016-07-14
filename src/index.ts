@@ -49,7 +49,8 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
         extractTextInstances
       }
     } as WebpackConfig
-    if (extractText && !providedInstance) {
+    const plugins = get(this, 'plugins', [])
+    if (extractText && !providedInstance && !this.plugins.find(plugin => (plugin === extractText) || (plugin instanceof ExtractTextPlugin && plugin.id === extractText.id))) {
       config.plugins = [
         /**
          * Plugin: ExtractTextPlugin
@@ -58,7 +59,7 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
          * If your total stylesheet volume is big, it will be faster because the stylesheet bundle is loaded in parallel to the javascript bundle.
          */
         extractText
-      ].concat(get(this, 'plugins', []))
+      ].concat(plugins)
     }
     if (resolveRelativeUrl instanceof Object) {
       config['resolveUrlLoader'] = resolveRelativeUrl
