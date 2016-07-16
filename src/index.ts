@@ -2,7 +2,7 @@ import {WebpackConfig, get} from '@easy-webpack/core'
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 /**
- * SASS loader support for *.scss
+ * Universal CSS loader support
  * filename: name of the extracted file
  * allChunks: should we extract all chunks to the file?
  * sourceMap: do you want a sourceMap generated? (takes longer)
@@ -30,7 +30,7 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
       if (extractCss) {
         extractText = extractTextInstances.get(filename)
         if (!extractText) {
-          extractText = new ExtractTextPlugin(filename, extractText instanceof Object ? extractText : { allChunks, sourceMap })
+          extractText = new ExtractTextPlugin(extractText instanceof Object ? extractText : { filename, allChunks, sourceMap })
           extractTextInstances.set(filename, extractText)
         }
       } else {
