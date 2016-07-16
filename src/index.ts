@@ -42,7 +42,9 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
       module: {
         loaders: get(this, 'module.loaders', []).concat([{
           test,
-          loaders: extractCss ? extractText.extract(...loaders.slice(1)) : loaders
+          loaders: extractCss ?
+            extractText.extract({ notExtractLoader: loaders[0], loader: loaders.slice(1) }) : 
+            loaders
         }])
       },
       metadata: {
