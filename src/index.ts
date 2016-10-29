@@ -1,4 +1,4 @@
-import {WebpackConfig, get} from '@easy-webpack/core'
+import {WebpackConfigWithMetadata, get} from '@easy-webpack/core'
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 /**
@@ -10,7 +10,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
  * resolveRelativeUrl: boolean or object with parameters
  */
 export = function css({ filename = '[name].css', allChunks = false, sourceMap = false, extractText = undefined, resolveRelativeUrl = undefined, additionalLoaders = [], test = /\.css$/i } = {}) {
-  return function css(this: WebpackConfig): WebpackConfig {
+  return function css(this: WebpackConfigWithMetadata): WebpackConfigWithMetadata {
     const loaders = ['style', `css${sourceMap ? '?sourceMap' : ''}`]
 
     if (resolveRelativeUrl) {
@@ -50,7 +50,7 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
       metadata: {
         extractTextInstances
       }
-    } as WebpackConfig
+    } as WebpackConfigWithMetadata
     const plugins = get(this, 'plugins', [])
     if (extractText && !providedInstance && !(this.plugins || []).find(plugin => (plugin === extractText) || (plugin instanceof ExtractTextPlugin && plugin.id === extractText.id))) {
       config.plugins = [
