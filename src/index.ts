@@ -40,7 +40,7 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
 
     const config = {
       module: {
-        loaders: get(this, 'module.loaders', []).concat([{
+        rules: get(this, 'module.rules', []).concat([{
           test,
           loaders: extractCss ?
             extractText.extract({ notExtractLoader: loaders[0], loader: loaders.slice(1) }) : 
