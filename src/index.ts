@@ -11,10 +11,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
  */
 export = function css({ filename = '[name].css', allChunks = false, sourceMap = false, extractText = undefined, resolveRelativeUrl = undefined, additionalLoaders = [], test = /\.css$/i } = {}) {
   return function css(this: WebpackConfigWithMetadata): WebpackConfigWithMetadata {
-    const loaders = ['style', `css${sourceMap ? '?sourceMap' : ''}`]
+    const loaders = ['style-loader', `css-loader${sourceMap ? '?sourceMap' : ''}`]
 
     if (resolveRelativeUrl) {
-      loaders.push(`resolve-url${sourceMap ? '?sourceMap' : ''}`)
+      loaders.push(`resolve-url-loader${sourceMap ? '?sourceMap' : ''}`)
       sourceMap = true // source maps need to be on for this
     }
 
