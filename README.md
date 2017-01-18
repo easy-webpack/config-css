@@ -135,6 +135,8 @@ For webpack 2, include uglifyJS plugin or include a [loader-options-plugin](http
 
 Or just include [config-uglify](https://github.com/easy-webpack/config-uglify).
 
+__Note on using loader-options-plugin__: You may only use this plugin once with a given test, as it will override all the options once used and can cause problems
+
 ```js
 const webpack = require('webpack');
 const generateConfig = require('@easy-webpack/core').generateConfig;
@@ -151,10 +153,11 @@ generateConfig(
   require('@easy-webpack/config-css')(),
   {
     plugins: [new webpack.LoaderOptionsPlugin({
+      test: /\.css$/,
       minimize: true
     })]
   }
-)
+);
 
 // config-uglify
 generateConfig(
