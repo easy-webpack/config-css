@@ -30,7 +30,7 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
       if (extractCss) {
         extractText = extractTextInstances.get(filename)
         if (!extractText) {
-          extractText = new ExtractTextPlugin(extractText instanceof Object ? extractText : { filename, allChunks, sourceMap })
+          extractText = new ExtractTextPlugin(extractText instanceof Object ? extractText : { filename, allChunks })
           extractTextInstances.set(filename, extractText)
         }
       } else {
@@ -42,8 +42,8 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
       module: {
         rules: get(this, 'module.rules', []).concat([{
           test,
-          loaders: extractCss ?
-            extractText.extract({ notExtractLoader: loaders[0], loader: loaders.slice(1) }) : 
+          use: extractCss ?
+            extractText.extract({ fallbackLoader: loaders[0], loader: loaders.slice(1) }) : 
             loaders
         }])
       },
