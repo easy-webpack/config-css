@@ -166,6 +166,21 @@ generateConfig(
 
 Currently, there is no way to pass in option to cssnano.
 
+## Load in fonts and images from CSS
+CSS files can include fonts and images by using the `url()` syntax.
+`config-css` would fail if any CSS file attempts to include fonts and images.
+
+This can be solved by including [config-fonts-and-images](https://github.com/easy-webpack/config-fonts-and-images) in webpack config.
+Fonts and images required by CSS will either embedded in emitted CSS file or they will emit a separate file.
+
+Simply [install](https://github.com/easy-webpack/config-fonts-and-images#installation) the config and include in `generateConfig` section.
+```js
+generateConfig(
+  require('@easy-webpack/config-css')(),
+  require('@easy-webpack/config-fonts-and-images')()
+);
+```
+
 [extract-text-plugin]: https://github.com/webpack/extract-text-webpack-plugin
 [css-loader]: https://github.com/webpack/css-loader
 [style-loader]: https://github.com/webpack/style-loader
