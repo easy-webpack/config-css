@@ -43,7 +43,7 @@ export = function css({ filename = '[name].css', allChunks = false, sourceMap = 
         rules: get(this, 'module.rules', []).concat([{
           test,
           use: extractCss ?
-            extractText.extract({ fallbackLoader: loaders[0], loader: loaders.slice(1) }) : 
+            extractText.extract({ fallback: loaders[0], use: loaders.slice(1) }) :
             loaders
         }])
       },
