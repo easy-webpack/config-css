@@ -1,4 +1,6 @@
 # @easy-webpack/config-css
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/easy-webpack/config-css.svg)](https://greenkeeper.io/)
 Include and inject css using [css-loader] and [style-loader]
 
 Or emit a CSS file of all required css using [extract-text-plugin] (default behaviour)
