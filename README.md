@@ -129,23 +129,27 @@ Minification is highly recommended in production as it can greatly reduce chunk 
  
 To enable minification, you must enable minification flag on webpack.
 
-For webpack 1, include uglifyJS plugin.
+For webpack 1, use [config-uglify](https://github.com/easy-webpack/config-uglify) or include uglifyJS plugin.
 
-For webpack 2, include uglifyJS plugin or include a [loader-options-plugin](https://webpack.js.org/plugins/loader-options-plugin/).
-
-Or just include [config-uglify](https://github.com/easy-webpack/config-uglify).
+For webpack 2, include a [loader-options-plugin](https://webpack.js.org/plugins/loader-options-plugin/).
 
 __Note on using loader-options-plugin__: You may only use this plugin once with a given test, as it will override all the options once used and can cause problems
 
 ```js
 const webpack = require('webpack');
 const generateConfig = require('@easy-webpack/core').generateConfig;
-// webpack 1 / webpack 2
+// webpack 1
 generateConfig(
   require('@easy-webpack/config-css')(),
   {
     plugins: [new webpack.optimize.UglifyJsPlugin()]
   }
+);
+
+// webpack 1, using config-uglify
+generateConfig(
+  require('@easy-webpack/config-css')(),
+  require('@easy-webpack/config-uglify')()
 );
 
 // webpack 2 only
@@ -158,15 +162,24 @@ generateConfig(
     })]
   }
 );
-
-// config-uglify
-generateConfig(
-  require('@easy-webpack/config-css')(),
-  require('@easy-webpack/config-uglify')()
-);
 ```
 
 Currently, there is no way to pass in option to cssnano.
+
+## Load in fonts and images from CSS
+CSS files can include fonts and images by using the `url()` syntax.
+`config-css` would fail if any CSS file attempts to include fonts and images.
+
+This can be solved by including [config-fonts-and-images](https://github.com/easy-webpack/config-fonts-and-images) in webpack config.
+Fonts and images required by CSS will either embedded in emitted CSS file or they will emit a separate file.
+
+Simply [install](https://github.com/easy-webpack/config-fonts-and-images#installation) the config and include in `generateConfig` section.
+```js
+generateConfig(
+  require('@easy-webpack/config-css')(),
+  require('@easy-webpack/config-fonts-and-images')()
+);
+```
 
 [extract-text-plugin]: https://github.com/webpack/extract-text-webpack-plugin
 [css-loader]: https://github.com/webpack/css-loader
